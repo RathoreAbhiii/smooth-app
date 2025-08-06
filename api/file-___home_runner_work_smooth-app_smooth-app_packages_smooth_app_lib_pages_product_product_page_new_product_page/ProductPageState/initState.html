@@ -74,7 +74,19 @@ void initState() {
   final LocalDatabase localDatabase = context.read&lt;LocalDatabase&gt;();
   initUpToDate(widget.product, localDatabase);
   DaoProductLastAccess(localDatabase).put(barcode);
-  WidgetsBinding.instance.addPostFrameCallback((_) {
+
+  _tabs = ProductPageTabBar.extractTabsFromProduct(
+    context: context,
+    product: upToDateProduct,
+  );
+
+  _tabController = TabController(
+    length: _tabs.length,
+    vsync: this,
+    initialIndex: 1,
+  );
+
+  onNextFrame(() {
     _updateLocalDatabaseWithProductHistory(context);
   });
 }</code></pre>
